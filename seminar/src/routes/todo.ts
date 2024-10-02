@@ -3,8 +3,9 @@
  * ---------------
  * <To do>
  * - Implement BE for todo router
- *   - Implement schema validation (Done?)
- *   - Implement routers
+ *   - Implement schema validation (Done)
+ *   - Implement routers (Done)
+ *   - Test and Debug
  * - Implement FE for todo router
  *   - Implement req-res handling
  *   - Implement user interaction
@@ -29,7 +30,7 @@ const delSchema = z.object({
     id: z.number()
 });
 
-/* edit req should be { id: number } */
+/* edit req should be { id: number, newState: string } */
 const editSchema = z.object({
     id: z.number(),
     newState: z.string()
@@ -71,6 +72,21 @@ router.post("/deleteTodo", async (req, res) => {
         const delObj = delSchema.parse(req.body);
         const [id] = [delObj.id];
         const storeRes = todoStore.deleteItem(id);
+        if (storeRes) {
+            res.json({ isOK: true });
+        } else {
+            res.status(500).json({ isOK: false });
+        }
+    } catch (e) {
+        res.status(500).json({ error: e });
+    }
+});
+
+router.post("/editTodo", async (req, res) => {
+    try {
+        const editObj = editSchema.parse(req.body);
+        const [id, state] = [editObj.id, editObj.newState];
+        const storeRes = todoStore.editItem(id, state);
         if (storeRes) {
             res.json({ isOK: true });
         } else {
