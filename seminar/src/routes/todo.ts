@@ -35,3 +35,18 @@ const editSchema = z.object({
     newState: z.string()
 });
 
+const router = express.Router();
+
+router.get("/getTodo", async (req, res) => {
+    try {
+        const reqState = req.query.state as string;
+        const storeRes = todoStore.selectItems(reqState);
+        if (storeRes.success) {
+            res.json(storeRes.data);
+        } else {
+            res.status(500).json( {error: "/getTodo Internal Error"} );
+        }
+    } catch (e) {
+        res.status(500).json( { error: e } );
+    }
+});

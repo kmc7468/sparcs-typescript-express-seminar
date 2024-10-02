@@ -26,11 +26,16 @@ class TodoDB {
     id = 1; itemCount = 1;
 
     LDataDB = [] as TodoItem[];
-  
-    selectItems = (count: number) => {
-      if (count > this.itemCount) return { success: false, data: "Too many items queried" };
-      if (count < 0) return { success: false, data: "Invalid count provided" };
-      else return { success: true, data: this.LDataDB.slice(0, count) };
+    
+    selectItems = (state: string) => {
+      try {
+        const data = this.LDataDB.filter((value) => {
+          return value.state === state;
+        });
+        return { success: true, data: data };
+      } catch (e) {
+        return { success: false, data: undefined };
+      }
     };
   
     insertItem = (item: { content: string, due: Date, state: string }) => {
@@ -52,7 +57,7 @@ class TodoDB {
 
     editItem = (id: number, state: string) => {
         let BItemEdited = false;
-        const targetItem = this.LDataDB.find((value, id) => {
+        const targetItem = this.LDataDB.find((value) => {
             return value.id === id;
         })
         if (typeof targetItem !== "undefined") {
