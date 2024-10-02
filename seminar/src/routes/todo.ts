@@ -50,3 +50,18 @@ router.get("/getTodo", async (req, res) => {
         res.status(500).json( { error: e } );
     }
 });
+
+router.post("/addTodo", async (req, res) => {
+    try {
+        const addObj = addSchema.parse(req.body);
+        const [content, due, state] = [addObj.content, addObj.due, "not started"];
+        const storeRes = todoStore.insertItem({ content, due, state });
+        if (storeRes) {
+            res.json({ isOK: true });
+        } else {
+            res.status(500).json({ isOK: false });
+        }
+    } catch (e) {
+        res.status(500).json( { error : e });
+    }
+});
