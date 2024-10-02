@@ -21,7 +21,7 @@ const deleteSchema = z.object({
   id: z.string()
 });
 
-// type of "id" for editFeed request is number?????
+// for some reason id for editFeed req is number
 const editSchema = z.object({
   id: z.number(),
   newTitle: z.string(),
@@ -84,6 +84,7 @@ router.post("/deleteFeed", (req, res) => {
 
 router.post("/editFeed", (req, res) => {
   try {
+    console.log(req.body);
     const editObj = editSchema.parse(req.body);
     const [id, title, content] = [editObj.id, editObj.newTitle, editObj.newContent];
     const addRes = feedStore.insertItem({ title, content });

@@ -1,3 +1,14 @@
+/***************************
+ * Assignment #4: Added a new router that includes CRUD.
+ * ---------------
+ * <To do>
+ * - Implement BE for todo router
+ * - Implement FE for todo router
+ * - Test TodoDB
+ * <Done>
+ * - Write TodoDB
+ ****************************/
+
 interface TodoItem {
     id: number;
     content: string;
