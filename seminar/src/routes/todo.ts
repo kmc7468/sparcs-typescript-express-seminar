@@ -11,6 +11,7 @@
  *   - Implement user interaction
  *   - Design (really??)
  * - Test TodoDB
+ * - Link to homepage
  * <Done>
  * - Write TodoDB
  ****************************/

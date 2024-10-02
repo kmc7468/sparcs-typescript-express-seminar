@@ -3,13 +3,20 @@
  * ---------------
  * <To do>
  * - Implement BE for todo router
+ *   - Implement schema validation (Done)
+ *   - Implement routers (Done)
+ *   - Test and Debug
  * - Implement FE for todo router
+ *   - Implement req-res handling
+ *   - Implement user interaction
+ *   - Design (really??)
  * - Test TodoDB
+ * - Link to homepage
  * <Done>
  * - Write TodoDB
  ****************************/
 
-interface TodoItem {
+interface ITodoItem {
     id: number;
     content: string;
     due: Date;
@@ -23,9 +30,9 @@ class TodoDB {
       return TodoDB.inst;
     };
     
-    id = 1; itemCount = 1;
+    id = 0; itemCount = 0;
 
-    LDataDB = [] as TodoItem[];
+    LDataDB = [] as ITodoItem[];
     
     selectItems = (state: string) => {
       try {
