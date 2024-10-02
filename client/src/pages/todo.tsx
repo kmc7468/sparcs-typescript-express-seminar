@@ -64,6 +64,14 @@ const TodoPage = (props: {}) => {
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
   }
 
+  const deletePost = (id: number) => {
+    const asyncFun = async () => {
+      await axios.post( SAPIBase + '/feed/deleteFeed', { id: id } );
+      setNPostCount(Math.max(NPostCount - 1, 0));
+    }
+    asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
+  }
+
   return (
     <div></div>
   );
