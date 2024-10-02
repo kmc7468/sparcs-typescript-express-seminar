@@ -72,6 +72,15 @@ const TodoPage = (props: {}) => {
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
   }
 
+  const editPost = () => {
+    const asyncFunc = async () => {
+      await axios.post( SAPIBase + '/feed/editFeed', { id: SEditPostId, newState: SEditPostState } );
+      setSEditPostId(null);
+      setSEditPostState("");
+    }
+    asyncFunc().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
+  }
+
   return (
     <div></div>
   );
