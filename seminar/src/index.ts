@@ -11,6 +11,19 @@ const port = 8080;
 
 app.use(express.json());
 
+/***************************
+ * Assignment #3: Add a middleware that leaves log for every http request.
+ * - Method, Path, Current Datetime
+ * ---------------
+ * <Done>
+ * - Implement middleware
+ * - Apply middleware
+ * - Test
+ ****************************/
+
+import logMiddleware from "./middlewares/log";
+app.use(logMiddleware);
+
 const whitelist = ["http://localhost:3000"];
 const corsOptions = {
   origin: (origin, callback) => {

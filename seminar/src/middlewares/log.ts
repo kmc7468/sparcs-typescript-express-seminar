@@ -2,11 +2,10 @@
  * Assignment #3: Add a middleware that leaves log for every http request.
  * - Method, Path, Current Datetime
  * ---------------
- * <To do>
- * - Apply middleware
- * - Test
  * <Done>
  * - Implement middleware
+ * - Apply middleware
+ * - Test
  ****************************/
 
 import { Request, Response, NextFunction } from "express";
@@ -23,7 +22,7 @@ const schema = z.object({
     path: z.string()
 });
 
-const logMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
     try {
         const zObj = schema.parse(req);
         console.log("[LOG-MIDDLEWARE] Method:", zObj.method, "| PATH:", zObj.path, "| DATE:", str);
@@ -33,5 +32,3 @@ const logMiddleware = (req: Request, res: Response, next: NextFunction) => {
         res.status(500).json({ error: e });
     }
 };
-
-module.exports = logMiddleware;
