@@ -1,7 +1,32 @@
 import express from "express";
 import feedStore from "../modules/feedStore";
+import { z } from "zod";
 
 const router = express.Router();
+
+/***************************
+ * Assignment #2: Add a schema validation with Zod for every POST method endpoint of feedRouter.
+ * ---------------
+ * <Done>
+ * - (BE) Import Zod and create Zod schemas
+ * - (BE) Apply schemas to endpoints
+ ****************************/
+
+const addSchema = z.object({
+  title: z.string(),
+  content: z.string()
+});
+
+const deleteSchema = z.object({
+  id: z.string()
+});
+
+// type of "id" for editFeed request is number?????
+const editSchema = z.object({
+  id: z.number(),
+  newTitle: z.string(),
+  newContent: z.string()
+});
 
 router.get("/getFeed", (req, res) => {
   try {
@@ -19,7 +44,8 @@ router.get("/getFeed", (req, res) => {
 
 router.post("/addFeed", (req, res) => {
   try {
-    const { title, content } = req.body;
+    const addObj = addSchema.parse(req.body);
+    const [title, content] = [addObj.title, addObj.content];
     const storeRes = feedStore.insertItem({ title, content });
     if (storeRes) {
       res.json({ isOK: true });
@@ -33,7 +59,8 @@ router.post("/addFeed", (req, res) => {
 
 router.post("/deleteFeed", (req, res) => {
   try {
-    const { id } = req.body;
+    const deleteObj = deleteSchema.parse(req.body);
+    const [id] = [deleteObj.id];
     const storeRes = feedStore.deleteItem(parseInt(id as string, 10));
     if (storeRes) {
       res.json({ isOK: true });
@@ -44,5 +71,36 @@ router.post("/deleteFeed", (req, res) => {
     res.status(500).json({ error: e });
   }
 });
+
+/***************************
+ * Assignment #1: Add an endpoint to feed that allows a feature to edit feeds.
+ * - Method: POST
+ * - Path: '/feed/editFeed'
+ * - Request Body Type: { id: string; newTitle: string; newContent: string; }
+ * ---------------
+ * <Done>
+ * - (BE) Added a router
+ ****************************/
+
+router.post("/editFeed", (req, res) => {
+  try {
+    const editObj = editSchema.parse(req.body);
+    const [id, title, content] = [editObj.id, editObj.newTitle, editObj.newContent];
+    const addRes = feedStore.insertItem({ title, content });
+    if (!addRes) {
+      res.status(500).json({ isOK: false });
+    } else {
+      const delRes = feedStore.deleteItem(id);
+      if (!delRes) {
+        res.status(500).json({ isOK: false });
+      } else {
+        res.json({ isOK: true });
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: e });
+  }
+})
 
 export default router;
