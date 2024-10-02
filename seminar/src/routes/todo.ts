@@ -25,7 +25,7 @@ const addSchema = z.object({
   });
   
 /* del req should be { id: number } */
-const deleteSchema = z.object({
+const delSchema = z.object({
     id: z.number()
 });
 
@@ -62,6 +62,21 @@ router.post("/addTodo", async (req, res) => {
             res.status(500).json({ isOK: false });
         }
     } catch (e) {
-        res.status(500).json( { error : e });
+        res.status(500).json( { error: e });
+    }
+});
+
+router.post("/deleteTodo", async (req, res) => {
+    try {
+        const delObj = delSchema.parse(req.body);
+        const [id] = [delObj.id];
+        const storeRes = todoStore.deleteItem(id);
+        if (storeRes) {
+            res.json({ isOK: true });
+        } else {
+            res.status(500).json({ isOK: false });
+        }
+    } catch (e) {
+        res.status(500).json({ error: e });
     }
 });
