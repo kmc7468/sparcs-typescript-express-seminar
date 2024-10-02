@@ -66,7 +66,7 @@ const TodoPage = (props: {}) => {
 
   const deletePost = (id: number) => {
     const asyncFun = async () => {
-      await axios.post( SAPIBase + '/feed/deleteFeed', { id: id } );
+      await axios.post( SAPIBase + '/todo/deleteTodo', { id: id } );
       setNPostCount(Math.max(NPostCount - 1, 0));
     }
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
@@ -74,7 +74,7 @@ const TodoPage = (props: {}) => {
 
   const editPost = () => {
     const asyncFunc = async () => {
-      await axios.post( SAPIBase + '/feed/editFeed', { id: SEditPostId, newState: SEditPostState } );
+      await axios.post( SAPIBase + '/todo/editTodo', { id: SEditPostId, newState: SEditPostState } );
       setSEditPostId(null);
       setSEditPostState("");
     }
@@ -82,7 +82,18 @@ const TodoPage = (props: {}) => {
   }
 
   return (
-    <div></div>
+    <div className="todo">
+        <Header/>
+        <h2>Todo</h2>
+        <div className={"todo-length-input"}>
+            Filter by state: &nbsp;&nbsp;
+            <select id={"post-filter-state"} name={"post-filter-state"} onChange={ (e) => setSSearchItem( e.target.value ) }>
+                <option value="not started">Not started</option>
+                <option value="working in progress">Working in Progress</option>
+                <option value="done">Done</option>
+            </select>
+        </div>
+    </div>
   );
 }
 
