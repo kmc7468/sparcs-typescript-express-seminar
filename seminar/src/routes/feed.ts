@@ -34,7 +34,6 @@ router.get("/getFeed", (req, res) => {
     const storeRes = feedStore.selectItems(requestCount);
     if (storeRes.success) {
       res.json(storeRes.data);
-      console.log(storeRes.data);
     } else {
       res.status(400).json(storeRes.data);
     }
@@ -85,7 +84,6 @@ router.post("/deleteFeed", (req, res) => {
 
 router.post("/editFeed", (req, res) => {
   try {
-    console.log(req.body);
     const editObj = editSchema.parse(req.body);
     const [id, title, content] = [editObj.id, editObj.newTitle, editObj.newContent];
     const addRes = feedStore.insertItem({ title, content });
