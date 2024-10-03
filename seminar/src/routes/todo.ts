@@ -2,13 +2,13 @@
  * Assignment #4: Added a new router that includes CRUD.
  * ---------------
  * <To do>
- * - Link to homepage
  * <Done>
  * - Implement TodoDB
  * - Implement BE
  * - Implement FE
  * - Design (give up)
  * - Test and Debug (probably)
+ * - Navigation
  ****************************/
 
 import express from "express";
