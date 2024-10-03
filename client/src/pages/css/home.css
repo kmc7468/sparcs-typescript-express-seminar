@@ -86,3 +86,26 @@
 .server-status .status-disconnected {
     color: red;
 }
+
+/***************************
+ * Assignment #4: Added a new router that includes CRUD.
+ * ---------------
+ * <To do>
+ * <Done>
+ * - Implement TodoDB
+ * - Implement BE
+ * - Implement FE
+ * - Design (give up)
+ * - Test and Debug (probably)
+ * - Navigation
+ ****************************/
+ 
+#todo-wrapper {
+    width: calc(100% - 60px);
+    margin: 0px auto 30px auto;
+    background-color: white;
+    /* height: 300px; */
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 rgba(0,0,0,0.2);
+    padding: 10px;
+}

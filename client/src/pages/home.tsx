@@ -49,6 +49,26 @@ const HomePage = (props: {}) => {
           </div>
         </div>
       </div>
+      {/***************************
+       * Assignment #4: Added a new router that includes CRUD.
+       * ---------------
+       * <To do>
+       * <Done>
+       * - Implement TodoDB
+       * - Implement BE
+       * - Implement FE
+       * - Design (give up)
+       * - Test and Debug (probably)
+       * - Navigation
+       ****************************/}
+      <div className={"link-wrapper"} id={"todo-wrapper"}>
+        <div className={"link-options"} id={"todo-option"}>
+          <div className={"page-link"} id={"todo"} onClick={ () => navigate("/todo") }>
+            <div className={"page-subtitle"}>Assignement #4</div>
+            <div className={"page-title"}>CRUD Todo</div>
+          </div>
+        </div>
+      </div>
       <div className={"server-status"}>
         <span className={"status-icon " + ( BServerConnected ? "status-connected" : "status-disconnected" )}>•</span>
         &nbsp;&nbsp;{ BServerConnected ? "Connected to API Server 🥳" : "Not Connected to API Server 😭" }
