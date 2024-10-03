@@ -22,7 +22,6 @@ const deleteExamSchema=z.object({
 
 
 router.post("/editExam", (req, res) => {
-  console.log("edit", req.body);  
   try {
     //const { id, newCourse, newDate } = req.body;
     const parsedBody=editExamSchema.parse(req.body);
@@ -40,7 +39,6 @@ router.post("/editExam", (req, res) => {
       res.status(500).json({ isOK: false });
     }
   } catch (e) {
-    console.log(e)
     if (e instanceof z.ZodError) {
       return res.status(400).json({error: e.errors});
     }
@@ -64,7 +62,6 @@ router.get("/getExam", (req, res) => {
 });
 
 router.post("/addExam", (req, res) => {
-  console.log("add", req.body);  
   try {
     const parsedBody=addExamSchema.parse(req.body);
 
