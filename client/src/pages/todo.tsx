@@ -87,6 +87,7 @@ const TodoPage = (props: {}) => {
         <option value="Not started">Not started</option>
         <option value="Working in Progress">Working in Progress</option>
         <option value="Done">Done</option>
+        <option value="">All</option>
       </select>
     </div>
     <div className={"todo-list"}>

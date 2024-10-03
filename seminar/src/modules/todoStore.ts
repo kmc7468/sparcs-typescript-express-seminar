@@ -25,16 +25,24 @@ class TodoDB {
       return TodoDB.inst;
     };
     
-    id = 0; itemCount = 0;
+    id = 2; itemCount = 2;
 
-    LDataDB = [] as ITodoItem[];
-    
+    LDataDB = [
+                {id: 0, content: "SPARCS NEWBIE PROGRAM #4", due: (new Date("10-06-2024")), state: "Not started"},
+                {id: 42, content: "git 계정 실수로 commit이 다른 계정에서 올라갔다는 걸 과제 다 하고 봤네...", due: (new Date("01-01-1970")), state: "Done"}
+              ]
+
     selectItems = (state: string) => {
       try {
         /* console.log("[TODO-DB] Select item | state: ", state); */
-        const data = this.LDataDB.filter((value) => {
-          return value.state === state;
-        });
+        let data = undefined;
+        if (state !== "") {
+          data = this.LDataDB.filter((value) => {
+            return value.state === state;
+          });
+        } else {
+          data = this.LDataDB;
+        }
         return { success: true, data: data };
       } catch (e) {
         return { success: false, data: undefined };
