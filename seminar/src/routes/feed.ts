@@ -1,9 +1,11 @@
 import express from "express";
 import feedStore from "../modules/feedStore";
-import { z } from "zod"
+import { z } from "zod";
+import logmiddleware from "../middlewares/log";
 
 const router = express.Router();
 
+router.use(logmiddleware);
 //zod 스키마
 const editFeedSchema=z.object({
   id: z.number(),
