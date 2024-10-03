@@ -19,6 +19,19 @@ class FeedDB {
     this.id++; this.itemCount++;
     return true;
   };
+  
+  updateItem = (item: { id: number; title: string; content: string }) => {
+    let BItemUpdated = false;
+    this.LDataDB = this.LDataDB.map((feed) => {
+      if (feed.id === item.id) {
+        BItemUpdated = true;
+        return { ...feed, title: item.title, content: item.content };
+      }
+      return feed;
+    });
+    return BItemUpdated;
+  };
+
 
   deleteItem = (id: number) => {
     let BItemDeleted = false;

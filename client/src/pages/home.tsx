@@ -46,7 +46,11 @@ const HomePage = (props: {}) => {
           <div className={"page-link"} onClick={ () => navigate("/ssr") }>
             <div className={"page-subtitle"}>Example #4</div>
             <div className={"page-title"}>Server Side Rendering</div>
-          </div>
+          </div>          
+        </div>
+        <div className={"exam-page-link"} onClick={ () => navigate("/exam") }>
+          <div className={"page-subtitle"}>Assignment 4</div>
+          <div className={"page-title"}>CRUD Check Exam</div>
         </div>
       </div>
       <div className={"server-status"}>

@@ -2,24 +2,24 @@ import React from "react";
 import axios from "axios";
 import { SAPIBase } from "../tools/api";
 import Header from "../components/header";
-import "./css/feed.css";
+import "./css/exam.css";
 
-interface IAPIResponse { id: string, title: string, content: string }
+interface IAPIResponse { id: string, course: string, date: string }
 
-const FeedPage = (props: {}) => {
+const ExamPage = (props: {}) => {
   const [ LAPIResponse, setLAPIResponse ] = React.useState<IAPIResponse[]>([]);
   const [ NPostCount, setNPostCount ] = React.useState<number>(1);
-  const [ SNewPostTitle, setSNewPostTitle ] = React.useState<string>("");
-  const [ SNewPostContent, setSNewPostContent ] = React.useState<string>("");
+  const [ SNewPostCourse, setSNewPostCourse ] = React.useState<string>("");
+  const [ SNewPostDate, setSNewPostDate ] = React.useState<string>("");
   const [ SSearchItem, setSSearchItem ] = React.useState<string>("");
   const [ SEditPostId, setSEditPostId ] = React.useState<string | null>(null);
-  const [ SEditPostTitle, setSEditPostTitle ] = React.useState<string>("");
-  const [ SEditPostContent, setSEditPostContent ] = React.useState<string>("");
+  const [ SEditPostCourse, setSEditPostCourse ] = React.useState<string>("");
+  const [ SEditPostDate, setSEditPostDate ] = React.useState<string>("");
 
   React.useEffect( () => {
     let BComponentExited = false;
     const asyncFun = async () => {
-      const { data } = await axios.get<IAPIResponse[]>( SAPIBase + `/feed/getFeed?count=${ NPostCount }&search=${ SSearchItem }`);
+      const { data } = await axios.get<IAPIResponse[]>( SAPIBase + `/exam/getExam?count=${ NPostCount }&search=${ SSearchItem }`);
       console.log(data);
       // const data = [ { id: 0, title: "test1", content: "Example body" }, { id: 1, title: "test2", content: "Example body" }, { id: 2, title: "test3", content: "Example body" } ].slice(0, NPostCount);
       if (BComponentExited) return;
@@ -31,10 +31,10 @@ const FeedPage = (props: {}) => {
 
   const createNewPost = () => {
     const asyncFun = async () => {
-      await axios.post( SAPIBase + '/feed/addFeed', { title: SNewPostTitle, content: SNewPostContent } );
+      await axios.post( SAPIBase + '/exam/addExam', { course: SNewPostCourse, date: SNewPostDate } );
       setNPostCount(NPostCount + 1);
-      setSNewPostTitle("");
-      setSNewPostContent("");
+      setSNewPostCourse("");
+      setSNewPostDate("");
     }
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
   }
@@ -42,7 +42,7 @@ const FeedPage = (props: {}) => {
   const deletePost = (id: string) => {
     const asyncFun = async () => {
       // One can set X-HTTP-Method header to DELETE to specify deletion as well
-      await axios.post( SAPIBase + '/feed/deleteFeed', { id: id } );
+      await axios.post( SAPIBase + '/exam/deleteExam', { id: id } );
       setNPostCount(Math.max(NPostCount - 1, 0));
     }
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
@@ -50,51 +50,51 @@ const FeedPage = (props: {}) => {
 
   const editPost = () => {
     const asyncFunc = async () => {
-      await axios.post( SAPIBase + '/feed/editFeed', { id: SEditPostId, newTitle: SEditPostTitle, newContent: SEditPostContent } );
+      await axios.post( SAPIBase + '/exam/editExam', { id: SEditPostId, newCourse: SEditPostCourse, newDate: SEditPostDate } );
       setSEditPostId(null);
     }
     asyncFunc().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
   }
 
   return (
-    <div className="Feed">
+    <div className="Exam">
       <Header/>
-      <h2>Feed</h2>
-      <div className={"feed-length-input"}>
+      <h2>Exam</h2>
+      <div className={"exam-length-input"}>
         Number of posts to show: &nbsp;&nbsp;
-        <input type={"number"} value={ NPostCount } id={"post-count-input"} min={1}
+        <input type={"number"} value={ NPostCount } id={"post-count-input"} min={0}
                onChange={ (e) => setNPostCount( parseInt(e.target.value) ) }
         />
       </div>
-      <div className={"feed-length-input"}>
+      <div className={"exam-length-input"}>
         Search Keyword: &nbsp;&nbsp;
         <input type={"text"} value={ SSearchItem } id={"post-search-input"}
                onChange={ (e) => setSSearchItem( e.target.value ) }
         />
       </div>
-      <div className={"feed-list"}>
+      <div className={"exam-list"}>
         { LAPIResponse.map( (val, i) =>
-          <div key={i} className={"feed-item"}>
-            { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id); setSEditPostTitle(val.title); setSEditPostContent(val.content); }}>ⓔ</div> }
+          <div key={i} className={"exam-item"}>
+            { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id); setSEditPostCourse(val.course); setSEditPostDate(val.date); }}>ⓔ</div> }
             {parseInt(val.id as string, 10) !==0 && <div className={"delete-item"} onClick={(e) => deletePost(`${val.id}`)}>ⓧ</div>}
-            <h3 className={"feed-title"}>{ val.title }</h3>
-            <p className={"feed-body"}>{ val.content }</p>
+            <h3 className={"exam-course"}>{ val.course }</h3>
+            <p className={"exam-body"}>{ val.date }</p>
           </div>
         ) }
         {
           SEditPostId !== null
           ?
-            <div className={"feed-item-add"}>
-              Title: <input type={"text"} value={SEditPostTitle} onChange={(e) => setSEditPostTitle(e.target.value)}/>
+            <div className={"exam-item-add"}>
+              Course: <input type={"text"} value={SEditPostCourse} onChange={(e) => setSEditPostCourse(e.target.value)}/>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              Content: <input type={"text"} value={SEditPostContent} onChange={(e) => setSEditPostContent(e.target.value)}/>
+              Date: <input type={"text"} value={SEditPostDate} onChange={(e) => setSEditPostDate(e.target.value)}/>
               <div className={"post-add-button"} onClick={(e) => editPost()}>Edit Post!</div>
             </div>
           :
-            <div className={"feed-item-add"}>
-              Title: <input type={"text"} value={SNewPostTitle} onChange={(e) => setSNewPostTitle(e.target.value)}/>
+            <div className={"exam-item-add"}>
+              Course: <input type={"text"} value={SNewPostCourse} onChange={(e) => setSNewPostCourse(e.target.value)}/>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              Content: <input type={"text"} value={SNewPostContent} onChange={(e) => setSNewPostContent(e.target.value)}/>
+              Date: <input type={"text"} value={SNewPostDate} onChange={(e) => setSNewPostDate(e.target.value)}/>
               <div className={"post-add-button"} onClick={(e) => createNewPost()}>Add Post!</div>
             </div>
         }
@@ -103,4 +103,4 @@ const FeedPage = (props: {}) => {
   );
 }
 
-export default FeedPage;
+export default ExamPage;
