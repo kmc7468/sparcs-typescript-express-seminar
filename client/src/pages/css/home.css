@@ -52,7 +52,7 @@
 
 .exam-page-link {
     margin: 10px 0 0 0;
-    border: solid 1px rgba(0,0,0,0.1);
+    border: solid 2px rgba(235,160,042);
     padding: 20px;
     border-radius: 8px;
     background-color: white;
@@ -76,7 +76,7 @@
 .exam-page-link .page-title {
     padding: 20px 0 20px 0;
     font-size: 30px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .page-link:hover {

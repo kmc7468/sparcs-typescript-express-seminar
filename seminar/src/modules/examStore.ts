@@ -6,7 +6,7 @@ class ExamDB {
     };
   
     id = 1; itemCount = 1;
-    LDataDB = [ { id: 0, course: "CS300", date: "10/24" } ];
+    LDataDB = [ { id: 0, course: "CS300", date: "10/24 09:00" } ];
   
     selectItems = (count: number) => {
       if (count > this.itemCount) return { success: false, data: "Too many items queried" };
