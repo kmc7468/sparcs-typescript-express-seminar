@@ -5,7 +5,7 @@ class FeedDB {
     return FeedDB.inst;
   };
 
-  id = 5; itemCount = 5;
+  id = 1; itemCount = 1;
   LDataDB = [ { id: 0, title: "test1", content: "Example body" } ];
 
   selectItems = (count: number) => {

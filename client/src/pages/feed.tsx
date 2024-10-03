@@ -8,7 +8,7 @@ interface IAPIResponse { id: string, title: string, content: string }
 
 const FeedPage = (props: {}) => {
   const [ LAPIResponse, setLAPIResponse ] = React.useState<IAPIResponse[]>([]);
-  const [ NPostCount, setNPostCount ] = React.useState<number>(0);
+  const [ NPostCount, setNPostCount ] = React.useState<number>(1);
   const [ SNewPostTitle, setSNewPostTitle ] = React.useState<string>("");
   const [ SNewPostContent, setSNewPostContent ] = React.useState<string>("");
   const [ SSearchItem, setSSearchItem ] = React.useState<string>("");
@@ -62,7 +62,7 @@ const FeedPage = (props: {}) => {
       <h2>Feed</h2>
       <div className={"feed-length-input"}>
         Number of posts to show: &nbsp;&nbsp;
-        <input type={"number"} value={ NPostCount } id={"post-count-input"} min={0}
+        <input type={"number"} value={ NPostCount } id={"post-count-input"} min={1}
                onChange={ (e) => setNPostCount( parseInt(e.target.value) ) }
         />
       </div>
@@ -76,7 +76,7 @@ const FeedPage = (props: {}) => {
         { LAPIResponse.map( (val, i) =>
           <div key={i} className={"feed-item"}>
             { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id); setSEditPostTitle(val.title); setSEditPostContent(val.content); }}>ⓔ</div> }
-            <div className={"delete-item"} onClick={(e) => deletePost(`${val.id}`)}>ⓧ</div>
+            {parseInt(val.id as string, 10) !==0 && <div className={"delete-item"} onClick={(e) => deletePost(`${val.id}`)}>ⓧ</div>}
             <h3 className={"feed-title"}>{ val.title }</h3>
             <p className={"feed-body"}>{ val.content }</p>
           </div>

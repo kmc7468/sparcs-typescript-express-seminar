@@ -5,7 +5,7 @@ class ExamDB {
       return ExamDB.inst;
     };
   
-    id = 10; itemCount = 10;
+    id = 1; itemCount = 1;
     LDataDB = [ { id: 0, course: "CS300", date: "10/24" } ];
   
     selectItems = (count: number) => {
@@ -25,7 +25,7 @@ class ExamDB {
       this.LDataDB = this.LDataDB.map((exam) => {
         if (exam.id === item.id) {
           BItemUpdated = true;
-          return { ...exam, title: item.course, content: item.date };
+          return { ...exam, course: item.course, date: item.date };
         }
         return exam;
       });

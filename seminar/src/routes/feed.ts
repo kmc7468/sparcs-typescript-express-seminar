@@ -25,6 +25,7 @@ const deleteFeedSchema=z.object({
 // 피드 편집 엔드포인트
 router.post("/editFeed", (req, res) => {
   try {
+    console.log("edit", req.body)
     //const { id, newTitle, newContent } = req.body;
     const parsedBody=editFeedSchema.parse(req.body);
 
@@ -65,6 +66,7 @@ router.get("/getFeed", (req, res) => {
 
 router.post("/addFeed", (req, res) => {
   try {
+    console.log("add", req.body)
     //const { title, content } = req.body;
     const parsedBody=addFeedSchema.parse(req.body);
 

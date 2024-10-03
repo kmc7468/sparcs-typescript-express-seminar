@@ -4,15 +4,15 @@ import { SAPIBase } from "../tools/api";
 import Header from "../components/header";
 import "./css/exam.css";
 
-interface IAPIResponse { id: number, course: string, date: string }
+interface IAPIResponse { id: string, course: string, date: string }
 
-const FeedPage = (props: {}) => {
+const ExamPage = (props: {}) => {
   const [ LAPIResponse, setLAPIResponse ] = React.useState<IAPIResponse[]>([]);
-  const [ NPostCount, setNPostCount ] = React.useState<number>(0);
+  const [ NPostCount, setNPostCount ] = React.useState<number>(1);
   const [ SNewPostCourse, setSNewPostCourse ] = React.useState<string>("");
   const [ SNewPostDate, setSNewPostDate ] = React.useState<string>("");
   const [ SSearchItem, setSSearchItem ] = React.useState<string>("");
-  const [ SEditPostId, setSEditPostId ] = React.useState<number | string | null>(null);
+  const [ SEditPostId, setSEditPostId ] = React.useState<string | null>(null);
   const [ SEditPostCourse, setSEditPostCourse ] = React.useState<string>("");
   const [ SEditPostDate, setSEditPostDate ] = React.useState<string>("");
 
@@ -39,7 +39,7 @@ const FeedPage = (props: {}) => {
     asyncFun().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
   }
 
-  const deletePost = (id: number) => {
+  const deletePost = (id: string) => {
     const asyncFun = async () => {
       // One can set X-HTTP-Method header to DELETE to specify deletion as well
       await axios.post( SAPIBase + '/exam/deleteExam', { id: id } );
@@ -50,7 +50,7 @@ const FeedPage = (props: {}) => {
 
   const editPost = () => {
     const asyncFunc = async () => {
-      await axios.post( SAPIBase + '/exam/editExam', { id: SEditPostId, newTitle: SEditPostCourse, newContent: SEditPostDate } );
+      await axios.post( SAPIBase + '/exam/editExam', { id: SEditPostId, newCourse: SEditPostCourse, newDate: SEditPostDate } );
       setSEditPostId(null);
     }
     asyncFunc().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
@@ -76,7 +76,7 @@ const FeedPage = (props: {}) => {
         { LAPIResponse.map( (val, i) =>
           <div key={i} className={"exam-item"}>
             { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id); setSEditPostCourse(val.course); setSEditPostDate(val.date); }}>ⓔ</div> }
-            <div className={"delete-item"} onClick={(e) => deletePost(val.id)}>ⓧ</div>
+            {parseInt(val.id as string, 10) !==0 && <div className={"delete-item"} onClick={(e) => deletePost(`${val.id}`)}>ⓧ</div>}
             <h3 className={"exam-course"}>{ val.course }</h3>
             <p className={"exam-body"}>{ val.date }</p>
           </div>
@@ -85,16 +85,16 @@ const FeedPage = (props: {}) => {
           SEditPostId !== null
           ?
             <div className={"exam-item-add"}>
-              Title: <input type={"text"} value={SEditPostCourse} onChange={(e) => setSEditPostCourse(e.target.value)}/>
+              Course: <input type={"text"} value={SEditPostCourse} onChange={(e) => setSEditPostCourse(e.target.value)}/>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              Content: <input type={"text"} value={SEditPostDate} onChange={(e) => setSEditPostDate(e.target.value)}/>
+              Date: <input type={"text"} value={SEditPostDate} onChange={(e) => setSEditPostDate(e.target.value)}/>
               <div className={"post-add-button"} onClick={(e) => editPost()}>Edit Post!</div>
             </div>
           :
-            <div className={"feed-item-add"}>
-              Title: <input type={"text"} value={SNewPostCourse} onChange={(e) => setSNewPostCourse(e.target.value)}/>
+            <div className={"exam-item-add"}>
+              Course: <input type={"text"} value={SNewPostCourse} onChange={(e) => setSNewPostCourse(e.target.value)}/>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              Content: <input type={"text"} value={SNewPostDate} onChange={(e) => setSNewPostDate(e.target.value)}/>
+              Date: <input type={"text"} value={SNewPostDate} onChange={(e) => setSNewPostDate(e.target.value)}/>
               <div className={"post-add-button"} onClick={(e) => createNewPost()}>Add Post!</div>
             </div>
         }
@@ -103,4 +103,4 @@ const FeedPage = (props: {}) => {
   );
 }
 
-export default FeedPage;
+export default ExamPage;

@@ -20,13 +20,14 @@ const deleteExamSchema=z.object({
   id:z.number(),
 });
 
-// 피드 편집 엔드포인트
+
 router.post("/editExam", (req, res) => {
+  console.log("edit", req.body);  
   try {
     //const { id, newCourse, newDate } = req.body;
     const parsedBody=editExamSchema.parse(req.body);
 
-    // 피드 업데이트
+    
     const storeRes = examStore.updateItem({
       id: parsedBody.id,
       course: parsedBody.newCourse,
@@ -39,6 +40,7 @@ router.post("/editExam", (req, res) => {
       res.status(500).json({ isOK: false });
     }
   } catch (e) {
+    console.log(e)
     if (e instanceof z.ZodError) {
       return res.status(400).json({error: e.errors});
     }
@@ -47,7 +49,7 @@ router.post("/editExam", (req, res) => {
 });
 
 
-router.get("/getFeed", (req, res) => {
+router.get("/getExam", (req, res) => {
   try {
     const requestCount = parseInt(req.query.count as string, 10);
     const storeRes = examStore.selectItems(requestCount);
@@ -61,9 +63,9 @@ router.get("/getFeed", (req, res) => {
   }
 });
 
-router.post("/addFeed", (req, res) => {
+router.post("/addExam", (req, res) => {
+  console.log("add", req.body);  
   try {
-    //const { title, content } = req.body;
     const parsedBody=addExamSchema.parse(req.body);
 
     const storeRes = examStore.insertItem({
@@ -84,7 +86,7 @@ router.post("/addFeed", (req, res) => {
   }
 });
 
-router.post("/deleteFeed", (req, res) => {
+router.post("/deleteExam", (req, res) => {
   try {
     //const { id } = req.body;
     const parsedBody=deleteExamSchema.parse(req.body);
