@@ -43,6 +43,27 @@ app.use("/feed", feedRouter);
 app.use("/account", accountRouter);
 app.use("/static", express.static(path.join(__dirname, "public")));
 
+/***************************
+ * Assignment #4: Added a new router that includes CRUD.
+ * ---------------
+ * <To do>
+ * - Implement BE for todo router
+ *   - Implement schema validation (Done)
+ *   - Implement routers (Done)
+ *   - Test and Debug
+ * - Implement FE for todo router
+ *   - Implement req-res handling
+ *   - Implement user interaction
+ *   - Design (really??)
+ * - Test TodoDB
+ * - Link to homepage
+ * <Done>
+ * - Write TodoDB
+ ****************************/
+
+import todoRouter from "./routes/todo";
+app.use("/todo", todoRouter);
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

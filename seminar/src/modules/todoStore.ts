@@ -30,12 +30,13 @@ class TodoDB {
       return TodoDB.inst;
     };
     
-    id = 0; itemCount = 0;
+    id = 1; itemCount = 1;
 
-    LDataDB = [] as ITodoItem[];
+    LDataDB = [ { id: 0, content: "Example content", due: (new Date()), state: "Not started" } ];
     
     selectItems = (state: string) => {
       try {
+        console.log("[TODO-DB] Select item | state: ", state);
         const data = this.LDataDB.filter((value) => {
           return value.state === state;
         });
@@ -46,8 +47,11 @@ class TodoDB {
     };
   
     insertItem = (item: { content: string, due: Date, state: string }) => {
+      console.log("[TODO-DB] Insert item: ", item);
       this.LDataDB.push({ id: this.id, ...item });
       this.id++; this.itemCount++;
+      console.log("[TODO-DB] Inserted item: ", this.LDataDB.find((value) => { return value.id+1 === this.id}));
+      console.log(this.id, this.itemCount);
       return true;
     };
   

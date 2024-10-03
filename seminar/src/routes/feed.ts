@@ -34,6 +34,7 @@ router.get("/getFeed", (req, res) => {
     const storeRes = feedStore.selectItems(requestCount);
     if (storeRes.success) {
       res.json(storeRes.data);
+      console.log(storeRes.data);
     } else {
       res.status(400).json(storeRes.data);
     }

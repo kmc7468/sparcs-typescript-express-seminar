@@ -15,8 +15,11 @@ class FeedDB {
   };
 
   insertItem = (item: { title: string; content: string }) => {
+    // console.log("[FEED-DB] Insert item: ", item);
     this.LDataDB.push({ id: this.id, ...item });
     this.id++; this.itemCount++;
+    // console.log("[FEED-DB] Inserted item: ", this.LDataDB.find((value) => { return value.id+1 === this.id}));
+    // console.log(this.id, this.itemCount);
     return true;
   };
 

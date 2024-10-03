@@ -2,18 +2,13 @@
  * Assignment #4: Added a new router that includes CRUD.
  * ---------------
  * <To do>
- * - Implement BE for todo router
- *   - Implement schema validation (Done)
- *   - Implement routers (Done)
- *   - Test and Debug
- * - Implement FE for todo router
- *   - Implement req-res handling
- *   - Implement user interaction
- *   - Design (really??)
- * - Test TodoDB
+ * - Design (really??)
+ * - Test and Debug
  * - Link to homepage
  * <Done>
  * - Write TodoDB
+ * - Implement BE
+ * - Implement FE
  ****************************/
 
 import React from "react";
@@ -21,6 +16,7 @@ import axios from "axios";
 import { SAPIBase } from "../tools/api";
 import Header from "../components/header";
 import "./css/todo.css";
+
 
 interface IAPIResponse {
   id: number;
@@ -37,7 +33,7 @@ const TodoPage = (props: {}) => {
   const [ SNewPostDue, setSNewPostDue ] = React.useState<Date>(initDate);
   const [ SNewPostContent, setSNewPostContent ] = React.useState<string>("");
   const [ SNewPostState, setSNewPostState ] = React.useState<string>("");
-  const [ SSearchItem, setSSearchItem ] = React.useState<string>("");
+  const [ SSearchItem, setSSearchItem ] = React.useState<string>("Not started");
   const [ SEditPostId, setSEditPostId ] = React.useState<number | null>(null);
   const [ SEditPostState, setSEditPostState ] = React.useState<string>("");
 
@@ -85,12 +81,13 @@ const TodoPage = (props: {}) => {
   <div className={"todo"}>
     <Header/>
     <h2>Todo</h2>
+    <div>Number of todos: {NPostCount}</div>
     <div className={"todo-length-input"}>
-      Filter by state: &nbsp;&nbsp;
-      <select id={"post-filter-state"} name={"post-filter-state"} onChange={ (e) => setSSearchItem( e.target.value ) }>
-        <option value="not started">Not started</option>
-        <option value="working in progress">Working in Progress</option>
-        <option value="done">Done</option>
+      Filter by state: &nbsp;&nbsp;{SSearchItem}
+      <select id={"post-filter-state"} name={"post-filter-state"} value={SSearchItem} onChange={ (e) => setSSearchItem( e.target.value ) }>
+        <option value="Not started">Not started</option>
+        <option value="Working in Progress">Working in Progress</option>
+        <option value="Done">Done</option>
       </select>
     </div>
     <div className={"todo-list"}>
@@ -99,8 +96,7 @@ const TodoPage = (props: {}) => {
         { SEditPostId !== val.id && <div className={"edit-item"} 
           onClick={(e) => { setSEditPostId(val.id); setSEditPostState(val.state); }}>Edit state</div> }
         { <div className={"delete-item"} onClick={(e) => deletePost(val.id)}>ⓧ</div> }
-        {/* reference: https://stackoverflow.com/a/16714931 */}
-        <p className={"todo-due"}>{ (val.due).toISOString().slice(0,10).replace(/-/g,"") }</p>
+        <p className={"todo-due"}>{ (val.due).toString() }</p>
         <p className={"todo-body"}>{ val.content }</p>
       </div>
     ) }
@@ -108,12 +104,17 @@ const TodoPage = (props: {}) => {
       SEditPostId !== null
       ?
       <div className={"todo-item-add"}>
-        State: <input type={"text"} value={SEditPostState} onChange={(e) => setSEditPostState(e.target.value)}/>
+        State: 
+        <select id={"post-filter-state"} name={"post-filter-state"} value={SEditPostState} onChange={ (e) => setSEditPostState( e.target.value ) }>
+          <option value="Not started">Not started</option>
+          <option value="Working in Progress">Working in Progress</option>
+        <option value="Done">Done</option>
+      </select>
         <div className={"post-add-button"} onClick={(e) => editPost()}>Edit</div>
       </div>
       :
       <div className={"todo-item-add"}>
-        Due: <input type={"text"} value={"Due format must be MM-DD-YYYY"} onChange={(e) => setSNewPostDue(new Date(e.target.value))}/>
+        Due: <input type={"text"} defaultValue={"MM-DD-YYYY"} onChange={(e) => setSNewPostDue(new Date(e.target.value))}/>
         Content: <input type={"text"} value={SNewPostContent} onChange={(e) => setSNewPostContent(e.target.value)}/>
         <div className={"post-add-button"} onClick={(e) => createNewPost()}>Add</div>
       </div>

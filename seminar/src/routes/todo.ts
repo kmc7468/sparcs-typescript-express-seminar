@@ -23,7 +23,7 @@ import { z } from "zod";
 /* add req should be { content: string, due: Date} */
 const addSchema = z.object({
     content: z.string(),
-    due: z.date()
+    due: z.string()
   });
   
 /* del req should be { id: number } */
@@ -41,10 +41,11 @@ const router = express.Router();
 
 router.get("/getTodo", async (req, res) => {
     try {
-        const reqState = req.query.state as string;
+        const reqState = req.query.search as string;
         const storeRes = todoStore.selectItems(reqState);
         if (storeRes.success) {
             res.json(storeRes.data);
+            console.log(storeRes.data);
         } else {
             res.status(500).json( {error: "/getTodo Internal Error"} );
         }
@@ -55,8 +56,9 @@ router.get("/getTodo", async (req, res) => {
 
 router.post("/addTodo", async (req, res) => {
     try {
+        console.log("add", req.body);
         const addObj = addSchema.parse(req.body);
-        const [content, due, state] = [addObj.content, addObj.due, "not started"];
+        const [content, due, state] = [addObj.content, (new Date(addObj.due)), "Not started"];
         const storeRes = todoStore.insertItem({ content, due, state });
         if (storeRes) {
             res.json({ isOK: true });
@@ -64,12 +66,14 @@ router.post("/addTodo", async (req, res) => {
             res.status(500).json({ isOK: false });
         }
     } catch (e) {
+        console.log(e);
         res.status(500).json( { error: e });
     }
 });
 
 router.post("/deleteTodo", async (req, res) => {
     try {
+        console.log("del", req.body);
         const delObj = delSchema.parse(req.body);
         const [id] = [delObj.id];
         const storeRes = todoStore.deleteItem(id);
@@ -79,12 +83,14 @@ router.post("/deleteTodo", async (req, res) => {
             res.status(500).json({ isOK: false });
         }
     } catch (e) {
+        console.log(e);
         res.status(500).json({ error: e });
     }
 });
 
 router.post("/editTodo", async (req, res) => {
     try {
+        console.log("edit", req.body);
         const editObj = editSchema.parse(req.body);
         const [id, state] = [editObj.id, editObj.newState];
         const storeRes = todoStore.editItem(id, state);
@@ -94,6 +100,9 @@ router.post("/editTodo", async (req, res) => {
             res.status(500).json({ isOK: false });
         }
     } catch (e) {
+        console.log(e);
         res.status(500).json({ error: e });
     }
 });
+
+export default router;
