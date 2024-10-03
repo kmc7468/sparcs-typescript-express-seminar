@@ -2,18 +2,13 @@
  * Assignment #4: Added a new router that includes CRUD.
  * ---------------
  * <To do>
- * - Implement BE for todo router
- *   - Implement schema validation (Done)
- *   - Implement routers (Done)
- *   - Test and Debug
- * - Implement FE for todo router
- *   - Implement req-res handling
- *   - Implement user interaction
- *   - Design (really??)
- * - Test TodoDB
+ * - Design (really??)
+ * - Test and Debug
  * - Link to homepage
  * <Done>
- * - Write TodoDB
+ * - Implement TodoDB
+ * - Implement BE
+ * - Implement FE
  ****************************/
 
 interface ITodoItem {
@@ -30,13 +25,13 @@ class TodoDB {
       return TodoDB.inst;
     };
     
-    id = 1; itemCount = 1;
+    id = 0; itemCount = 0;
 
-    LDataDB = [ { id: 0, content: "Example content", due: (new Date()), state: "Not started" } ];
+    LDataDB = [] as ITodoItem[];
     
     selectItems = (state: string) => {
       try {
-        console.log("[TODO-DB] Select item | state: ", state);
+        /* console.log("[TODO-DB] Select item | state: ", state); */
         const data = this.LDataDB.filter((value) => {
           return value.state === state;
         });
@@ -47,16 +42,17 @@ class TodoDB {
     };
   
     insertItem = (item: { content: string, due: Date, state: string }) => {
-      console.log("[TODO-DB] Insert item: ", item);
+      /* console.log("[TODO-DB] Insert item: ", item); */
       this.LDataDB.push({ id: this.id, ...item });
       this.id++; this.itemCount++;
-      console.log("[TODO-DB] Inserted item: ", this.LDataDB.find((value) => { return value.id+1 === this.id}));
-      console.log(this.id, this.itemCount);
+      /* console.log("[TODO-DB] Inserted item: ", this.LDataDB.find((value) => { return value.id+1 === this.id}));
+      console.log(this.id, this.itemCount); */
       return true;
     };
   
     deleteItem = (id: number) => {
       let BItemDeleted = false;
+      console.log("[TODO-DB] Delete item of id: ", id);
       this.LDataDB = this.LDataDB.filter((value) => {
         const match = value.id === id;
         if (match) BItemDeleted = true;

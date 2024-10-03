@@ -2,13 +2,13 @@
  * Assignment #4: Added a new router that includes CRUD.
  * ---------------
  * <To do>
- * - Design (really??)
- * - Test and Debug
  * - Link to homepage
  * <Done>
- * - Write TodoDB
+ * - Implement TodoDB
  * - Implement BE
  * - Implement FE
+ * - Design (give up)
+ * - Test and Debug (probably)
  ****************************/
 
 import React from "react";
@@ -16,7 +16,6 @@ import axios from "axios";
 import { SAPIBase } from "../tools/api";
 import Header from "../components/header";
 import "./css/todo.css";
-
 
 interface IAPIResponse {
   id: number;
@@ -83,7 +82,7 @@ const TodoPage = (props: {}) => {
     <h2>Todo</h2>
     <div>Number of todos: {NPostCount}</div>
     <div className={"todo-length-input"}>
-      Filter by state: &nbsp;&nbsp;{SSearchItem}
+      Filter by state: &nbsp;&nbsp;
       <select id={"post-filter-state"} name={"post-filter-state"} value={SSearchItem} onChange={ (e) => setSSearchItem( e.target.value ) }>
         <option value="Not started">Not started</option>
         <option value="Working in Progress">Working in Progress</option>
@@ -96,8 +95,8 @@ const TodoPage = (props: {}) => {
         { SEditPostId !== val.id && <div className={"edit-item"} 
           onClick={(e) => { setSEditPostId(val.id); setSEditPostState(val.state); }}>Edit state</div> }
         { <div className={"delete-item"} onClick={(e) => deletePost(val.id)}>ⓧ</div> }
-        <p className={"todo-due"}>{ (val.due).toString() }</p>
-        <p className={"todo-body"}>{ val.content }</p>
+        <p className={"todo-due"}>Due: { (val.due).toString() }</p>
+        <p className={"todo-body"}>Content: { val.content }</p>
       </div>
     ) }
     {
@@ -114,8 +113,8 @@ const TodoPage = (props: {}) => {
       </div>
       :
       <div className={"todo-item-add"}>
-        Due: <input type={"text"} defaultValue={"MM-DD-YYYY"} onChange={(e) => setSNewPostDue(new Date(e.target.value))}/>
-        Content: <input type={"text"} value={SNewPostContent} onChange={(e) => setSNewPostContent(e.target.value)}/>
+        Due: <input type={"text"} placeholder={"MM-DD-YYYY"} maxLength={10} onChange={(e) => {setSNewPostDue(new Date(e.target.value))}}/>
+        &nbsp;&nbsp; Content: <input type={"text"} value={SNewPostContent} onChange={(e) => setSNewPostContent(e.target.value)}/>
         <div className={"post-add-button"} onClick={(e) => createNewPost()}>Add</div>
       </div>
     }

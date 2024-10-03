@@ -2,18 +2,13 @@
  * Assignment #4: Added a new router that includes CRUD.
  * ---------------
  * <To do>
- * - Implement BE for todo router
- *   - Implement schema validation (Done)
- *   - Implement routers (Done)
- *   - Test and Debug
- * - Implement FE for todo router
- *   - Implement req-res handling
- *   - Implement user interaction
- *   - Design (really??)
- * - Test TodoDB
  * - Link to homepage
  * <Done>
- * - Write TodoDB
+ * - Implement TodoDB
+ * - Implement BE
+ * - Implement FE
+ * - Design (give up)
+ * - Test and Debug (probably)
  ****************************/
 
 import express from "express";
@@ -45,7 +40,6 @@ router.get("/getTodo", async (req, res) => {
         const storeRes = todoStore.selectItems(reqState);
         if (storeRes.success) {
             res.json(storeRes.data);
-            console.log(storeRes.data);
         } else {
             res.status(500).json( {error: "/getTodo Internal Error"} );
         }
