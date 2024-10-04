@@ -4,6 +4,7 @@ import path from "path";
 
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
+import chatRouter from "./routes/chat";
 import accountRouter from "./routes/account";
 
 const app = express();
@@ -26,6 +27,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/status", statusRouter);
+app.use("/chat", chatRouter);
 app.use("/feed", feedRouter);
 app.use("/account", accountRouter);
 app.use("/static", express.static(path.join(__dirname, "public")));
