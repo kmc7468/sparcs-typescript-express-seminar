@@ -10,21 +10,19 @@ interface IAPIResponse {
   content: string;
 }
 
-const FeedPage = (props: {}) => {
+const ChatPage = (props: {}) => {
   const [LAPIResponse, setLAPIResponse] = React.useState<IAPIResponse[]>([]);
   const [NPostCount, setNPostCount] = React.useState<number>(0);
   const [SNewPostTitle, setSNewPostTitle] = React.useState<string>("");
-  const [SNewPostContent, setSNewPostContent] = React.useState<string>("");
   const [SSearchItem, setSSearchItem] = React.useState<string>("");
   const [SEditPostId, setSEditPostId] = React.useState<string | null>(null);
   const [SEditPostTitle, setSEditPostTitle] = React.useState<string>("");
-  const [SEditPostContent, setSEditPostContent] = React.useState<string>("");
 
   React.useEffect(() => {
     let BComponentExited = false;
     const asyncFun = async () => {
       const { data } = await axios.get<IAPIResponse[]>(
-        SAPIBase + `/feed/getFeed?count=${NPostCount}&search=${SSearchItem}`
+        SAPIBase + `/chat/getChat?count=${NPostCount}&search=${SSearchItem}`
       );
       console.log(data);
       // const data = [ { id: 0, title: "test1", content: "Example body" }, { id: 1, title: "test2", content: "Example body" }, { id: 2, title: "test3", content: "Example body" } ].slice(0, NPostCount);
@@ -37,15 +35,19 @@ const FeedPage = (props: {}) => {
     };
   }, [NPostCount, SSearchItem, SEditPostId]);
 
+  React.useEffect(() => {
+    axios
+      .get<number>(SAPIBase + "/chat/getChatLength")
+      .then((res) => setNPostCount(res.data));
+  }, []);
+
   const createNewPost = () => {
     const asyncFun = async () => {
-      await axios.post(SAPIBase + "/feed/addFeed", {
+      await axios.post(SAPIBase + "/chat/addChat", {
         title: SNewPostTitle,
-        content: SNewPostContent,
       });
       setNPostCount(NPostCount + 1);
       setSNewPostTitle("");
-      setSNewPostContent("");
     };
     asyncFun().catch((e) => window.alert(`AN ERROR OCCURED! ${e}`));
   };
@@ -53,7 +55,7 @@ const FeedPage = (props: {}) => {
   const deletePost = (id: string) => {
     const asyncFun = async () => {
       // One can set X-HTTP-Method header to DELETE to specify deletion as well
-      await axios.post(SAPIBase + "/feed/deleteFeed", { id: id });
+      await axios.post(SAPIBase + "/chat/deleteChat", { id: id });
       setNPostCount(Math.max(NPostCount - 1, 0));
     };
     asyncFun().catch((e) => window.alert(`AN ERROR OCCURED! ${e}`));
@@ -61,10 +63,9 @@ const FeedPage = (props: {}) => {
 
   const editPost = () => {
     const asyncFunc = async () => {
-      await axios.post(SAPIBase + "/feed/editFeed", {
+      await axios.post(SAPIBase + "/chat/editChat", {
         id: SEditPostId,
         newTitle: SEditPostTitle,
-        newContent: SEditPostContent,
       });
       setSEditPostId(null);
     };
@@ -74,7 +75,7 @@ const FeedPage = (props: {}) => {
   return (
     <div className="Feed">
       <Header />
-      <h2>Feed</h2>
+      <h2>Chat</h2>
       <div className={"feed-length-input"}>
         Number of posts to show: &nbsp;&nbsp;
         <input
@@ -101,9 +102,7 @@ const FeedPage = (props: {}) => {
               <div
                 className={"edit-item"}
                 onClick={(e) => {
-                  setSEditPostId(val.id.toString()); //api가 요구하는 타입도, 타입스크립트 상 의도한 타입도 string지만, 런타임에서 val.id에 number가 전달되므로, set할때 재설정
-                  setSEditPostTitle(val.title);
-                  setSEditPostContent(val.content);
+                  setSEditPostId(val.id.toString());
                 }}
               >
                 ⓔ
@@ -127,12 +126,6 @@ const FeedPage = (props: {}) => {
               value={SEditPostTitle}
               onChange={(e) => setSEditPostTitle(e.target.value)}
             />
-            &nbsp;&nbsp;&nbsp;&nbsp; Content:{" "}
-            <input
-              type={"text"}
-              value={SEditPostContent}
-              onChange={(e) => setSEditPostContent(e.target.value)}
-            />
             <div className={"post-add-button"} onClick={(e) => editPost()}>
               Edit Post!
             </div>
@@ -145,12 +138,6 @@ const FeedPage = (props: {}) => {
               value={SNewPostTitle}
               onChange={(e) => setSNewPostTitle(e.target.value)}
             />
-            &nbsp;&nbsp;&nbsp;&nbsp; Content:{" "}
-            <input
-              type={"text"}
-              value={SNewPostContent}
-              onChange={(e) => setSNewPostContent(e.target.value)}
-            />
             <div className={"post-add-button"} onClick={(e) => createNewPost()}>
               Add Post!
             </div>
@@ -161,4 +148,4 @@ const FeedPage = (props: {}) => {
   );
 };
 
-export default FeedPage;
+export default ChatPage;

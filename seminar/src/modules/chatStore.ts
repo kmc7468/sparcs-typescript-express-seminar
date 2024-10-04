@@ -1,13 +1,22 @@
-class FeedDB {
-  static inst: FeedDB;
+interface Chat {
+  id: number;
+  title: string;
+}
+
+class ChatDB {
+  static inst: ChatDB;
   static getInst = () => {
-    if (!FeedDB.inst) FeedDB.inst = new FeedDB();
-    return FeedDB.inst;
+    if (!ChatDB.inst) ChatDB.inst = new ChatDB();
+    return ChatDB.inst;
   };
 
   id = 1;
   itemCount = 1;
-  LDataDB = [{ id: 0, title: "test1", content: "Example body" }];
+  LDataDB: Chat[] = [{ id: 0, title: "test1" }];
+
+  selectLength = () => {
+    return { success: true, data: this.itemCount };
+  };
 
   selectItems = (count: number) => {
     if (count > this.itemCount)
@@ -16,7 +25,7 @@ class FeedDB {
     else return { success: true, data: this.LDataDB.slice(0, count) };
   };
 
-  insertItem = (item: { title: string; content: string }) => {
+  insertItem = (item: { title: string }) => {
     this.LDataDB.push({ id: this.id, ...item });
     this.id++;
     this.itemCount++;
@@ -34,16 +43,16 @@ class FeedDB {
     return BItemDeleted;
   };
 
-  updateItem = (id: number, item: { title: string; content: string }) => {
+  updateItem = (item: Chat) => {
     let BItemUpdated = false;
     this.LDataDB = this.LDataDB.map((value) => {
-      if (value.id === id) {
+      if (value.id === item.id) {
         BItemUpdated = true;
-        return { id, ...item };
+        return { id: item.id, title: item.title };
       } else return value;
     });
     return BItemUpdated;
   };
 }
 
-export default FeedDB.getInst();
+export default ChatDB.getInst();
