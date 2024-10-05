@@ -6,6 +6,6 @@ export default async (req: Request, res:Response, next: NextFunction) => {
         console.log(`Method : ${req.method}, Path : ${req.path}, Time : ${time.getHours()}h ${time.getMinutes()}m ${time.getSeconds()}s `);
         next();
     } catch (e){
-        res.status(400).json({ error: "error" });
+        res.status(500).json({ error: "error" });
     }
   };
