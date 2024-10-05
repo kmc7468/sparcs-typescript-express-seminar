@@ -1,5 +1,5 @@
 import express from "express";
-import feedStore from "../modules/feedStore";
+import diaryStore from "../modules/diaryStore";
 import {z} from "zod";
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 const addFeedSchema = z.object({
   title: z.string(),
   content: z.string(),
+  rating: z.number(),
 });
 
 const deleteFeedSchema = z.object({
@@ -17,12 +18,13 @@ const editFeedSchema = z.object({
   id: z.number(),
   newTitle: z.string(),
   newContent: z.string(),
+  newRating: z.number(),
 });
 
-router.get("/getFeed", (req, res) => {
+router.get("/getDiary", (req, res) => {
   try {
     const requestCount = parseInt(req.query.count as string, 10);
-    const storeRes = feedStore.selectItems(requestCount);
+    const storeRes = diaryStore.selectItems(requestCount);
     if (storeRes.success) {
       res.json(storeRes.data);
     } else {
@@ -33,11 +35,11 @@ router.get("/getFeed", (req, res) => {
   }
 });
 
-router.post("/addFeed", (req, res) => {
+router.post("/addDiary", (req, res) => {
   try {
     const obj = addFeedSchema.parse(req.body);
-    const { title, content } = obj;
-    const storeRes = feedStore.insertItem({ title, content });
+    const { title, content, rating } = obj;
+    const storeRes = diaryStore.insertItem({ title, content, rating });
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -48,31 +50,26 @@ router.post("/addFeed", (req, res) => {
   }
 });
 
-router.post("/deleteFeed", (req, res) => {
+router.post("/deleteDiary", (req, res) => {
   try {
     const obj = deleteFeedSchema.parse(req.body);
     const { id } = obj;
-
-    const storeRes = feedStore.deleteItem(id);
+    const storeRes = diaryStore.deleteItem(id);
     if (storeRes) {
       res.json({ isOK: true });
     } else {
       res.status(500).json({ isOK: false });
     }
   } catch (e) {
-    if (e instanceof z.ZodError) {
-      res.status(400).json({ error: "Invalid format", details: e.errors });
-    } else {
-      res.status(500).json({ error: e });
-    }
+    res.status(500).json({ error: e });
   }
 });
 
-router.post("/editFeed", (req, res) => {
+router.post("/editDiary", (req, res) => {
   try {
     const obj = editFeedSchema.parse(req.body);
-    const { id, newTitle, newContent } = obj;
-    const storeRes = feedStore.editItem({ id, newTitle, newContent });
+    const { id, newTitle, newContent, newRating } = obj;
+    const storeRes = diaryStore.editItem({ id, newTitle, newContent, newRating });
     if (storeRes) {
       res.json({ isOK: true });
     } else {
