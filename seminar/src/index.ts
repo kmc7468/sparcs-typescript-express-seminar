@@ -5,6 +5,7 @@ import path from "path";
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
+import logging from "./middlewares/logging";
 
 const app = express();
 const port = 8080;
@@ -29,6 +30,7 @@ app.use("/status", statusRouter);
 app.use("/feed", feedRouter);
 app.use("/account", accountRouter);
 app.use("/static", express.static(path.join(__dirname, "public")));
+app.use(logging);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
