@@ -13,7 +13,14 @@ class FeedDB {
     if (count < 0) return { success: false, data: "Invalid count provided" };
     else return { success: true, data: this.LDataDB.slice(0, count) };
   };
-
+  updateItem = (id: number, newFeed: { title: string; content: string }) => {
+    const feedIndex = this.LDataDB.findIndex((feed) => feed.id === id);
+    if (feedIndex === -1) {
+      return false;  
+    }
+    this.LDataDB[feedIndex] = { ...this.LDataDB[feedIndex], ...newFeed };
+    return true; 
+  };
   insertItem = (item: { title: string; content: string }) => {
     this.LDataDB.push({ id: this.id, ...item });
     this.id++; this.itemCount++;

@@ -27,8 +27,9 @@ const rl = readline.createInterface({
 
 router.post("/editFeed", (req, res) => {
   try {
-    const { id, newTitle, newContent } = editFeedSchema.parse(req.body);
 
+    const { id, newTitle, newContent } = editFeedSchema.parse(req.body);
+    console.log(typeof id, newTitle, newContent);
     const storeRes = feedStore.updateItem(parseInt(id as string), { title: newTitle, content: newContent });
     if (storeRes) {
       res.json({ isOK: true, updatedFeed: { id, title: newTitle, content: newContent } });

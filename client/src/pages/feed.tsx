@@ -75,7 +75,7 @@ const FeedPage = (props: {}) => {
       <div className={"feed-list"}>
         { LAPIResponse.map( (val, i) =>
           <div key={i} className={"feed-item"}>
-            { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id); setSEditPostTitle(val.title); setSEditPostContent(val.content); }}>ⓔ</div> }
+            { SEditPostId !== val.id && <div className={"edit-item"} onClick={(e) => { setSEditPostId(val.id.toString()); setSEditPostTitle(val.title); setSEditPostContent(val.content); }}>ⓔ</div> }
             <div className={"delete-item"} onClick={(e) => deletePost(`${val.id}`)}>ⓧ</div>
             <h3 className={"feed-title"}>{ val.title }</h3>
             <p className={"feed-body"}>{ val.content }</p>
