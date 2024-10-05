@@ -42,11 +42,8 @@ router.post("/deletereview", (req, res) => {
   try {
     const delSchema = z.object({
         id: z.number(),
-        name: z.string(),
-        menu: z.string(),
-        star: z.number(),
     });
-    const { id,name,menu,star } = delSchema.parse(req.body);
+    const { id } = delSchema.parse(req.body);
     const storeRes = reviewStore.deleteReview(id);
     if (storeRes) {
       res.json({ isOK: true });
