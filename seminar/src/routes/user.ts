@@ -1,5 +1,5 @@
 import express from "express";
-import feedStore from "../modules/feedStore";
+import userStore from "../modules/userStore";
 import loggerMiddleware from "../middlewares/logger";
 import { z } from "zod";
 
@@ -7,24 +7,22 @@ const router = express.Router();
 router.use(loggerMiddleware)
 
 const api002Schema = z.object({
-  title: z.string(),
-  content: z.string(),
+  name: z.string(),
+  email: z.string(),
 })
 
 const api003Schema = z.object({
-  id: z.string(),
+  email: z.string(),
 })
 
 const api004Schema = z.object({
-  id: z.string(),
-  newTitle: z.string(),
-  newContent: z.string(),
+  newName: z.string(),
+  email: z.string(),
 })
 
-router.get("/getFeed", (req, res) => {
+router.get("/read", (req, res) => {
   try {
-    const requestCount = parseInt(req.query.count as string, 10);
-    const storeRes = feedStore.selectItems(requestCount);
+    const storeRes = userStore.selectItems();
     if (storeRes.success) {
       res.json(storeRes.data);
     } else {
@@ -35,10 +33,10 @@ router.get("/getFeed", (req, res) => {
   }
 });
 
-router.post("/addFeed", (req, res) => {
+router.post("/create", (req, res) => {
   try {
-    const { title, content } =  api002Schema.parse(req.body);
-    const storeRes = feedStore.insertItem({ title, content });
+    const { name, email } =  api002Schema.parse(req.body);
+    const storeRes = userStore.insertItem({ name, email });
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -49,10 +47,10 @@ router.post("/addFeed", (req, res) => {
   }
 });
 
-router.post("/deleteFeed", (req, res) => {
+router.post("/delete", (req, res) => {
   try {
-    const { id } = api003Schema.parse(req.body);
-    const storeRes = feedStore.deleteItem(parseInt(id as string, 10));
+    const { email } = api003Schema.parse(req.body);
+    const storeRes = userStore.deleteItem(email);
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -63,10 +61,10 @@ router.post("/deleteFeed", (req, res) => {
   }
 });
 
-router.post("/editFeed", (req, res) => {
+router.post("/update", (req, res) => {
   try {
-    const { id, newTitle, newContent } = api004Schema.parse(req.body);
-    const storeRes = feedStore.editItem( parseInt(id as string, 10), newTitle, newContent );
+    const { newName, email } = api004Schema.parse(req.body);
+    const storeRes = userStore.editItem( newName, email );
     if (storeRes) {
       res.json({ isOK: true });
     } else {
