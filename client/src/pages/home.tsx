@@ -47,6 +47,10 @@ const HomePage = (props: {}) => {
             <div className={"page-subtitle"}>Example #4</div>
             <div className={"page-title"}>Server Side Rendering</div>
           </div>
+          <div className={"page-link"} onClick={ () => navigate("/task") }>
+            <div className={"page-subtitle"}>Example #5</div>
+            <div className={"page-title"}>To do list</div>
+          </div>
         </div>
       </div>
       <div className={"server-status"}>

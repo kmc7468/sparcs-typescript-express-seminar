@@ -2,12 +2,19 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import path from "path";
 
+import taskRouter from "./routes/task"
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
 
 const app = express();
 const port = 8080;
+
+app.use((req, res, next) => {
+  const currentTime = new Date().toISOString();
+  console.log(`[${currentTime}] ${req.method} ${req.path}`);
+  next();
+});
 
 app.use(express.json());
 
@@ -25,6 +32,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use("/task", taskRouter);
 app.use("/status", statusRouter);
 app.use("/feed", feedRouter);
 app.use("/account", accountRouter);
