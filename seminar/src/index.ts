@@ -5,6 +5,7 @@ import path from "path";
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
+import statuslog from "./middlewares/statuslog"
 
 const app = express();
 const port = 8080;
@@ -24,7 +25,7 @@ const corsOptions = {
 } satisfies CorsOptions;
 
 app.use(cors(corsOptions));
-
+app.use(statuslog);
 app.use("/status", statusRouter);
 app.use("/feed", feedRouter);
 app.use("/account", accountRouter);

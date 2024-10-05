@@ -30,6 +30,14 @@ class FeedDB {
     if (BItemDeleted) this.itemCount--;
     return BItemDeleted;
   };
+
+
+  editItem = (id: number, item : {newTitle: string; newContent: string}) => {
+    this.LDataDB[id].title=item.newTitle;
+    this.LDataDB[id].content=item.newContent;
+    return true;
+  };
+
 }
 
 export default FeedDB.getInst();
