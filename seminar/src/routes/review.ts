@@ -27,7 +27,7 @@ router.post("/addreview", (req, res) => {
       star: z.number(),
     });
     const { id,name,menu,star } = addSchema.parse(req.body);
-    const storeRes = reviewStore.insertReview(id, {name, menu, star });
+    const storeRes = reviewStore.insertReview(id, {name, menu, star});
     if (storeRes) {
       res.json({ isOK: true });
     } else {

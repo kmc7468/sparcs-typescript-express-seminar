@@ -56,12 +56,12 @@ router.post("/deleteFeed", (req, res) => {
 router.post("/editFeed", (req, res) => {
   try {
     const editSchema = z.object({
-      id: z.number(),
+      id: z.string(),
       newTitle: z.string(),
       newContent: z.string(),
     });
     const { id, newTitle, newContent } = editSchema.parse(req.body);
-    const storeRes = feedStore.editItem(id,{newTitle, newContent});
+    const storeRes = feedStore.editItem(parseInt(id as string,10),{newTitle, newContent});
     if (storeRes) {
       res.json({ isOK: true });
     } else {
