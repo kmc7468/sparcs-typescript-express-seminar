@@ -1,12 +1,13 @@
-class FeedDB {
-  static inst: FeedDB;
+class DiaryDB {
+  static inst: DiaryDB;
   static getInst = () => {
-    if (!FeedDB.inst) FeedDB.inst = new FeedDB();
-    return FeedDB.inst;
+    if (!DiaryDB.inst) DiaryDB.inst = new DiaryDB();
+    return DiaryDB.inst;
   };
 
-  id = 1; itemCount = 1;
-  LDataDB = [ { id: 0, title: "test1", content: "Example body" } ];
+  id = 1; 
+  itemCount = 1;
+  LDataDB = [ { id: 0, title: "오늘의 하루", content: "참 힘든 하루였다", rating: 1 } ];
 
   selectItems = (count: number) => {
     if (count > this.itemCount) return { success: false, data: "Too many items queried" };
@@ -14,9 +15,10 @@ class FeedDB {
     else return { success: true, data: this.LDataDB.slice(0, count) };
   };
 
-  insertItem = (item: { title: string; content: string }) => {
+  insertItem = (item: { title: string; content: string, rating: number }) => {
     this.LDataDB.push({ id: this.id, ...item });
-    this.id++; this.itemCount++;
+    this.id++; 
+    this.itemCount++;
     return true;
   };
 
@@ -31,18 +33,19 @@ class FeedDB {
     return BItemDeleted;
   };
   
-  editItem = (item: { id: number; newTitle: string; newContent: string }) => {
-    var { id, newTitle, newContent } = item;
+  editItem = (item: { id: number; newTitle: string; newContent: string, newRating: number }) => {
+    var { id, newTitle, newContent, newRating } = item;
     var selected = this.LDataDB.find((value) => {
       return value.id === id;
     });
     if (selected) {
       selected.title = newTitle;
       selected.content = newContent;
+      selected.rating = newRating
       return true;
     }
     return false;
   };
 }
 
-export default FeedDB.getInst();
+export default DiaryDB.getInst();
