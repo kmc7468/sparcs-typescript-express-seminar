@@ -30,6 +30,18 @@ class FeedDB {
     if (BItemDeleted) this.itemCount--;
     return BItemDeleted;
   };
+  //여기가 수정한 부분
+  editItem = (id: number, newTitle: string, newContent: string) => {
+    const index = this.LDataDB.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      this.LDataDB[index].title = newTitle;
+      this.LDataDB[index].content = newContent;
+      return true;
+    } else {
+      return false;
+    }
+  };
+  //
 }
 
 export default FeedDB.getInst();
