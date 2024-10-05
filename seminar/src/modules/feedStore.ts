@@ -5,8 +5,8 @@ class FeedDB {
     return FeedDB.inst;
   };
 
-  id = 1; itemCount = 1;
-  LDataDB = [ { id: 0, title: "test1", content: "Example body" } ];
+  id = 0; itemCount = 0;
+  LDataDB: any[] = [];
 
   selectItems = (count: number) => {
     if (count > this.itemCount) return { success: false, data: "Too many items queried" };
@@ -18,6 +18,20 @@ class FeedDB {
     this.LDataDB.push({ id: this.id, ...item });
     this.id++; this.itemCount++;
     return true;
+  };
+
+  editItem = (id: number, newTitle: string, newContent: string) => {
+    let BItemEdited = false;
+    
+    for (let i=0; i<this.itemCount; i++) {
+      if (this.LDataDB[i].id === id) {
+        this.LDataDB[i].title = newTitle;
+        this.LDataDB[i].content = newContent;
+        BItemEdited = true;
+        break;
+      }
+    }
+    return BItemEdited;
   };
 
   deleteItem = (id: number) => {

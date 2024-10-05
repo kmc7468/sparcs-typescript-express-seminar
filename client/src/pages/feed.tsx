@@ -53,7 +53,7 @@ const FeedPage = (props: {}) => {
       await axios.post( SAPIBase + '/feed/editFeed', { id: SEditPostId, newTitle: SEditPostTitle, newContent: SEditPostContent } );
       setSEditPostId(null);
     }
-    asyncFunc().catch(e => window.alert(`AN ERROR OCCURED! ${e}`));
+    asyncFunc().catch(e => {window.alert(`AN ERROR OCCURED! ${e}`)});
   }
 
   return (
