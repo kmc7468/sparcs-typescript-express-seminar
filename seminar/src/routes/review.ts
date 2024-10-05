@@ -1,13 +1,13 @@
 import express from "express";
-import feedStore from "../modules/feedStore";
+import reviewStore from "../modules/reviewstore";
 import { z } from "zod";
 
 const router = express.Router();
 
-router.get("/getFeed", (req, res) => {
+router.get("/getreview", (req, res) => {
   try {
-    const requestCount = parseInt(req.query.count as string, 10);
-    const storeRes = feedStore.selectItems(requestCount);
+    const requestRestaurant = req.query.name as string;
+    const storeRes = reviewStore.selectReview(requestRestaurant);
     if (storeRes.success) {
       res.json(storeRes.data);
     } else {
@@ -18,14 +18,16 @@ router.get("/getFeed", (req, res) => {
   }
 });
 
-router.post("/addFeed", (req, res) => {
+router.post("/addreview", (req, res) => {
   try {
     const addSchema = z.object({
-      title: z.string(),
-      content: z.string(),
+      id: z.number(),
+      name: z.string(),
+      menu: z.string(),
+      star: z.number(),
     });
-    const { title, content } = addSchema.parse(req.body);
-    const storeRes = feedStore.insertItem({ title, content });
+    const { id,name,menu,star } = addSchema.parse(req.body);
+    const storeRes = reviewStore.insertReview(id, {name, menu, star});
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -36,13 +38,13 @@ router.post("/addFeed", (req, res) => {
   }
 });
 
-router.post("/deleteFeed", (req, res) => {
+router.post("/deletereview", (req, res) => {
   try {
     const delSchema = z.object({
-      id: z.string(),
+        id: z.number(),
     });
     const { id } = delSchema.parse(req.body);
-    const storeRes = feedStore.deleteItem(parseInt(id as string, 10));
+    const storeRes = reviewStore.deleteReview(id);
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -53,15 +55,16 @@ router.post("/deleteFeed", (req, res) => {
   }
 });
 
-router.post("/editFeed", (req, res) => {
+router.post("/editreview", (req, res) => {
   try {
     const editSchema = z.object({
-      id: z.string(),
-      newTitle: z.string(),
-      newContent: z.string(),
+        id: z.number(),
+        name: z.string(),
+        menu: z.string(),
+        newStar: z.number(),
     });
-    const { id, newTitle, newContent } = editSchema.parse(req.body);
-    const storeRes = feedStore.editItem(parseInt(id as string,10),{newTitle, newContent});
+    const { id, name, menu, newStar } = editSchema.parse(req.body);
+    const storeRes = reviewStore.editReview(id, {name, menu, newStar});
     if (storeRes) {
       res.json({ isOK: true });
     } else {
@@ -71,5 +74,6 @@ router.post("/editFeed", (req, res) => {
     res.status(500).json({ error: e });
   }
 });
+
 
 export default router;

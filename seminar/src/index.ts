@@ -5,6 +5,8 @@ import path from "path";
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
+import statuslog from "./middlewares/statuslog"
+import reviewRouter from "./routes/review"
 
 const app = express();
 const port = 8080;
@@ -12,6 +14,7 @@ const port = 8080;
 app.use(express.json());
 
 const whitelist = ["http://localhost:3000"];
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -24,9 +27,10 @@ const corsOptions = {
 } satisfies CorsOptions;
 
 app.use(cors(corsOptions));
-
+app.use(statuslog);
 app.use("/status", statusRouter);
 app.use("/feed", feedRouter);
+app.use("/review", reviewRouter);
 app.use("/account", accountRouter);
 app.use("/static", express.static(path.join(__dirname, "public")));
 
