@@ -5,11 +5,13 @@ import path from "path";
 import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
+import logger from "./middlewares/logger";
 
 const app = express();
 const port = 8080;
 
 app.use(express.json());
+app.use(logger);
 
 const whitelist = ["http://localhost:3000"];
 const corsOptions = {
