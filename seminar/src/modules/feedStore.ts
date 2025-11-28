@@ -30,6 +30,16 @@ class FeedDB {
     if (BItemDeleted) this.itemCount--;
     return BItemDeleted;
   };
-}
+
+  editItem = (id: number, newTitle: string, newContent: string) => {
+    const item = this.LDataDB.find((value: { id: number; title: string; content: string }) => value.id === id);
+    if (item) {
+      item.title = newTitle;
+      item.content = newContent;
+      return true;
+    }
+    return false;
+  };
+}  // ← 클래스 닫는 중괄호
 
 export default FeedDB.getInst();
