@@ -6,6 +6,7 @@ import statusRouter from "./routes/status";
 import feedRouter from "./routes/feed";
 import accountRouter from "./routes/account";
 import logger from "./middlewares/logger";
+import postRouter from "./routes/post";
 
 const app = express();
 const port = 8080;
@@ -30,6 +31,7 @@ app.use(cors(corsOptions));
 app.use("/status", statusRouter);
 app.use("/feed", feedRouter);
 app.use("/account", accountRouter);
+app.use("/post", postRouter); 
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.listen(port, () => {
